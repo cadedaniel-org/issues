@@ -3,7 +3,7 @@ name: Add incidents to incident project
 on:
   issues:
     types:
-      - opened
+      - labeled
 
 jobs:
   add-to-project:
