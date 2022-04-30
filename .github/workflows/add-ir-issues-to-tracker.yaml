@@ -1,4 +1,4 @@
-name: "Issue Labeler"
+name: "Add incident issues to tracker"
 on:
   issues:
     types: [opened]
