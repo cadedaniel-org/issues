@@ -1,13 +1,14 @@
 name: "Issue Labeler"
 on:
   issues:
-    types: [opened, edited]
+    types: [opened]
 
 jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
     - uses: github/issue-labeler@v2.4.1
+      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: .github/labeler.yml
