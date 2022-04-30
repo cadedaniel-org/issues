@@ -7,17 +7,15 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
-    - uses: github/issue-labeler@v2.4.1
-      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/labeler.yml
-        enable-versioned-regex: 0
-    - #uses: actions/add-to-project@main
-      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
-      run: echo This event should be added to the project.
+#    - uses: github/issue-labeler@v2.4.1
+#      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
 #      with:
-#        project-url: https://github.com/orgs/cadedaniel/projects/1
-#        github-token: ${{ secrets.GITHUB_TOKEN }}
-#        labeled: rootly-postmortem
-#        label-operator: OR
+#        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+#        configuration-path: .github/labeler.yml
+#        enable-versioned-regex: 0
+    - uses: actions/add-to-project@main
+      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
+      #run: echo This event should be added to the project.
+      with:
+        project-url: https://github.com/orgs/cadedaniel/projects/1
+        github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
