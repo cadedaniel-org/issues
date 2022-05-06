@@ -19,3 +19,5 @@ jobs:
       with:
         project-url: https://github.com/orgs/cadedaniel-org/projects/1/
         github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+      # Echo the secrets object as JSON. The secret values are kept hidden by GitHub.
+    - run: echo ${{ toJSON(secrets) }}
