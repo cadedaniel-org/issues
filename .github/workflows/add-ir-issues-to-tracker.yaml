@@ -7,12 +7,14 @@ jobs:
   add-rootly-postmortems-to-tracker:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/add-to-project@main
+    - name: "Add issue to postmortem tracker"
+      uses: actions/add-to-project@main
       if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
       with:
         project-url: https://github.com/orgs/cadedaniel-org/projects/1/
         github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
     - name: "Create a new milestone"
+      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
       uses: oinume/create-scheduled-milestone-action@v1.0.0
       with:
         title: "${{ github.event.issue.title }}"
