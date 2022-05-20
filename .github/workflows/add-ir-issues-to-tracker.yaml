@@ -17,7 +17,7 @@ jobs:
       with:
         title: "${{ github.event.issue.title }}"
         state: "open"
-        description: "${{ github.event.issue.html_url }}"
+        description: "Milestone for action items of [${{ github.event.issue.title}}](${{ github.event.issue.html_url }})."
         #due_on: "${{ steps.set-due-on.outputs.due_on }}"
       env:
         GITHUB_TOKEN: "${{ secrets.ADD_TO_PROJECT_PAT }}"
