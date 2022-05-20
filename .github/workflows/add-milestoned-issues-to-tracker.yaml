@@ -7,4 +7,9 @@ jobs:
   add-milestoned-issues-to-tracker:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.event.issue.milestone.title }}
+      - name: "Add issue to postmortem tracker"
+        uses: actions/add-to-project@main
+        if: ${{ github.event_name == 'issues' && contains(github.event.issue.milestone.title, '[postmortem-tracker]') }}
+        with:
+          project-url: https://github.com/orgs/cadedaniel-org/projects/1/
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
