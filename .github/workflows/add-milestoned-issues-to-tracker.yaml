@@ -7,9 +7,4 @@ jobs:
   add-milestoned-issues-to-tracker:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/add-to-project@main
       run: echo ${{ github.event.issue.milestone.title }}
-      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
-      with:
-        project-url: https://github.com/orgs/cadedaniel-org/projects/1/
-        github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
