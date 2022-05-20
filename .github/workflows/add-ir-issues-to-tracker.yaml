@@ -15,6 +15,7 @@ jobs:
         github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
     - name: "Create a new milestone"
       if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
+      id: create-milestone
       uses: oinume/create-scheduled-milestone-action@v1.0.0
       with:
         title: "${{ github.event.issue.title }}"
@@ -23,7 +24,13 @@ jobs:
         #due_on: "${{ steps.set-due-on.outputs.due_on }}"
       env:
         GITHUB_TOKEN: "${{ secrets.ADD_TO_PROJECT_PAT }}"
-
+    - name: Create comment
+      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        issue-number: ${{ github.event.issue.number }}
+        body: |
+          Milestone created for tracking action items: [${{ github.event.issue.title }}](https://github.com/cadedaniel-org/issues/milestone/${{ steps.create-milestone.outputs.number }}).
 
 # This can't handle titles with spaces or colons.
 #    - name: Create new milestone
