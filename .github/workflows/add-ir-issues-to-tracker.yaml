@@ -18,9 +18,9 @@ jobs:
       id: create-milestone
       uses: oinume/create-scheduled-milestone-action@v1.0.0
       with:
-        title: "${{ github.event.issue.title }}"
+        title: "${{ github.event.issue.title }} [postmortem-tracker]"
         state: "open"
-        description: "Milestone for action items of [${{ github.event.issue.title}}](${{ github.event.issue.html_url }})."
+        description: "Milestone for action items of postmortem [${{ github.event.issue.title}}](${{ github.event.issue.html_url }})."
         #due_on: "${{ steps.set-due-on.outputs.due_on }}"
       env:
         GITHUB_TOKEN: "${{ secrets.ADD_TO_PROJECT_PAT }}"
