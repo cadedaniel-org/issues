@@ -29,6 +29,7 @@ jobs:
       uses: peter-evans/create-or-update-comment@v2
       with:
         issue-number: ${{ github.event.issue.number }}
+        token: ${{ secrets.ADD_TO_PROJECT_PAT }}
         body: |
           Milestone created for tracking action items: [${{ github.event.issue.title }}](https://github.com/cadedaniel-org/issues/milestone/${{ steps.create-milestone.outputs.number }}).
 
