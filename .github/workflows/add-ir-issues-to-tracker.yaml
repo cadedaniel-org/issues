@@ -4,20 +4,26 @@ on:
     types: [opened]
 
 jobs:
-  triage:
+  add-rootly-postmortems-to-tracker:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/add-to-project@main
+      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
+      with:
+        project-url: https://github.com/orgs/cadedaniel-org/projects/1/
+        github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+    - name: Create new milestone
+      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
+      uses: WyriHaximus/github-action-create-milestone@v1
+      with:
+        title: ${{ github.event.issue.title }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.ADD_TO_PROJECT_PAT }}
+        
+        
 #    - uses: github/issue-labeler@v2.4.1
 #      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
 #      with:
 #        repo-token: "${{ secrets.GITHUB_TOKEN }}"
 #        configuration-path: .github/labeler.yml
 #        enable-versioned-regex: 0
-    - uses: actions/add-to-project@main
-      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, 'created-by-rootly') }}
-      #run: echo This event should be added to the project.
-      with:
-        project-url: https://github.com/orgs/cadedaniel-org/projects/1/
-        github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-      # Echo the secrets object as JSON. The secret values are kept hidden by GitHub.
-    - run: echo ${{ toJSON(secrets) }}
