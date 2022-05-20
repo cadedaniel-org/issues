@@ -7,4 +7,4 @@ jobs:
   add-milestoned-issues-to-tracker:
     runs-on: ubuntu-latest
     steps:
-      run: echo ${{ github.event.issue.milestone.title }}
+      - run: echo ${{ github.event.issue.milestone.title }}
