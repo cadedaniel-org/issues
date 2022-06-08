@@ -13,3 +13,12 @@ jobs:
         with:
           project-url: https://github.com/orgs/cadedaniel-org/projects/1/
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+      - name: "Add label"
+        uses: github/issue-labeler@v2.4.1
+        if: ${{ github.event_name == 'issues' && contains(github.event.issue.milestone.title, '[postmortem-tracker]') }}
+        with:
+          repo-token: "${{ secrets.ADD_TO_PROJECT_PAT }}"
+          configuration-path: .github/workflows/add-ir-issues-to-tracker.yaml
+          enable-versioned-regex: 1
+          versioned-regex: 'this-versioned-regex-should-never-match'
+          body-missing-regex-label: 'pi-postmortem-action-item'
