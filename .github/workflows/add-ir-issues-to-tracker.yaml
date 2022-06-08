@@ -26,8 +26,10 @@ jobs:
       if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, '/created-by-rootly') }}
       with:
         repo-token: "${{ secrets.ADD_TO_PROJECT_PAT }}"
-        configuration-path: .github/pi-postmortem-labeller.yml
-        enable-versioned-regex: 0
+        configuration-path: .github/workflows/add-ir-issues-to-tracker
+        enable-versioned-regex: 1
+        versioned-regex: 'this-versioned-regex-should-never-match'
+        body-missing-regex-label: 'pi-postmortem'
     - name: "Create a new milestone"
       if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, '/created-by-rootly') }}
       id: create-milestone
