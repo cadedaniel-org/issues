@@ -26,7 +26,7 @@ jobs:
       if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, '/created-by-rootly') }}
       with:
         repo-token: "${{ secrets.ADD_TO_PROJECT_PAT }}"
-        configuration-path: .github/workflows/add-ir-issues-to-tracker.yaml
+        configuration-path: does-not-exist # .github/workflows/add-ir-issues-to-tracker.yaml
         enable-versioned-regex: 1
         versioned-regex: 'this-versioned-regex-should-never-match'
         body-missing-regex-label: 'pi-postmortem'
