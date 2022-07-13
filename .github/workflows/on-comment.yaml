@@ -10,12 +10,12 @@ jobs:
     steps:
     - name: "Add issue to postmortem tracker"
       uses: actions/add-to-project@main
-      if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body, '/created-by-rootly') }}
+      if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}
       with:
         project-url: https://github.com/orgs/cadedaniel-org/projects/1/
         github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
     - name: "Create a new milestone"
-      if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body, '/created-by-rootly') }}
+      if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}
       id: create-milestone
       uses: oinume/create-scheduled-milestone-action@v1.0.0
       with:
@@ -26,7 +26,7 @@ jobs:
         GITHUB_TOKEN: "${{ secrets.ADD_TO_PROJECT_PAT }}"
     - name: "Add label"
       uses: github/issue-labeler@v2.4.1
-      if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body, '/created-by-rootly') }}
+      if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}
       with:
         repo-token: "${{ secrets.ADD_TO_PROJECT_PAT }}"
         configuration-path: does-not-exist # .github/workflows/add-ir-issues-to-tracker.yaml
@@ -34,7 +34,7 @@ jobs:
         versioned-regex: 'this-versioned-regex-should-never-match'
         body-missing-regex-label: 'pi-postmortem'
     - name: Create comment
-      if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body, '/created-by-rootly') }}
+      if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}
       uses: peter-evans/create-or-update-comment@v2
       with:
         issue-number: ${{ github.event.issue.number }}
