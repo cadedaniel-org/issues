@@ -1,0 +1,68 @@
+name: "(on comment) Add incident issues to tracker"
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  add-rootly-postmortems-to-tracker:
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Add issue to postmortem tracker"
+      uses: actions/add-to-project@main
+      if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body, '/created-by-rootly') }}
+      with:
+        project-url: https://github.com/orgs/cadedaniel-org/projects/1/
+        github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+    - name: Create comment
+      if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body, '/created-by-rootly') }}
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        issue-number: ${{ github.event.issue.number }}
+        token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+        body: |
+          The text `/created-by-rootly` was detected in the issue body. This issue has been added to the [PI postmortem tracker project](https://github.com/orgs/cadedaniel-org/projects/1/views/1).
+    - name: "Add label"
+      uses: github/issue-labeler@v2.4.1
+      if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body, '/created-by-rootly') }}
+      with:
+        repo-token: "${{ secrets.ADD_TO_PROJECT_PAT }}"
+        configuration-path: does-not-exist # .github/workflows/add-ir-issues-to-tracker.yaml
+        enable-versioned-regex: 1
+        versioned-regex: 'this-versioned-regex-should-never-match'
+        body-missing-regex-label: 'pi-postmortem'
+    - name: "Create a new milestone"
+      if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body, '/created-by-rootly') }}
+      id: create-milestone
+      uses: oinume/create-scheduled-milestone-action@v1.0.0
+      with:
+        title: "${{ github.event.issue.title }} [postmortem-tracker]"
+        state: "open"
+        description: "Milestone for action items of postmortem [${{ github.event.issue.title}}](${{ github.event.issue.html_url }})."
+      env:
+        GITHUB_TOKEN: "${{ secrets.ADD_TO_PROJECT_PAT }}"
+    - name: Create comment
+      if: ${{ !github.event.issue.pull_request && contains(github.event.comment.body, '/created-by-rootly') }}
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        issue-number: ${{ github.event.issue.number }}
+        token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+        body: |
+          Milestone created for tracking action items: [${{ github.event.issue.title }}](https://github.com/cadedaniel-org/issues/milestone/${{ steps.create-milestone.outputs.number }}).
+
+# This can't handle titles with spaces or colons.
+#    - name: Create new milestone
+#      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, '/created-by-rootly') }}
+#      uses: WyriHaximus/github-action-create-milestone@v1
+#      with:
+#        title: '${{ github.event.issue.title }}'
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.ADD_TO_PROJECT_PAT }}
+        
+        
+#    - uses: github/issue-labeler@v2.4.1
+#      if: ${{ github.event_name == 'issues' && contains(github.event.issue.body, '/created-by-rootly') }}
+#      with:
+#        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+#        configuration-path: .github/labeler.yml
+#        enable-versioned-regex: 0
