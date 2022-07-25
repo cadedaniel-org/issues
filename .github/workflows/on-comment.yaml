@@ -31,14 +31,20 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ['pi-postmortem', 'test81']
-            })
+              labels: ['pi-postmortem']
+            });
+            rval = github.rest.issues.createMilestone({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'test81',
+            });
+            console.log(rval);
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "[bot] I see a `/created-by-rootly`. I've done the following things:\n* Added this issue to the [postmortem tracker](https://github.com/orgs/cadedaniel-org/projects/1/views/10).\n* Added the label [`pi-postmortem`](https://github.com/cadedaniel-org/issues/labels/pi-postmortem) to this issue."
-            })
+            });
             // * Created [a milestone for action items](https://github.com/cadedaniel-org/issues/milestone/${{ steps.create-milestone.outputs.number }}).
 
         #- uses: actions/github-script@v6
