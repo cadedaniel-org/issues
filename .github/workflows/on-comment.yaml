@@ -8,24 +8,20 @@ jobs:
   check_has_command_text:
     runs-on: ubuntu-latest
     outputs:
-      test2: ${{ steps.test2.outputs.test2 }}
-      test3: ${{ steps.check_comment_has_command_text.outputs.comment_has_command_text }}
       comment_has_command_text: ${{ steps.check_comment_has_command_text.outputs.comment_has_command_text }}
-      test: "cade"
     steps:
       - id: check_comment_has_command_text
         run: echo "::set-output name=comment_has_command_text::${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}"
-      - id: test2
-        run: echo "::set-output name=test2:hello"
   dependent:
     runs-on: ubuntu-latest
     needs: check_has_command_text
+    if: needs.check_has_command_text.outputs.comment_has_command_text == 'true'
     steps:
-      - if: ${{ needs.check_has_command_text.outputs.comment_has_command_text == 'true' }}
-        run: echo 'Yes it has the command text.'
-      - if: ${{ needs.check_has_command_text.outputs.comment_has_command_text == 'false' }}
-        run: echo 'No, it does not have the command text.'
-      - run: echo ${{ toJSON(needs.check_has_command_text.outputs) }}
+      #- if: ${{ needs.check_has_command_text.outputs.comment_has_command_text == 'true' }}
+      #  run: echo 'Yes it has the command text.'
+      #- if: ${{ needs.check_has_command_text.outputs.comment_has_command_text == 'false' }}
+      #  run: echo 'No, it does not have the command text.'
+      #- run: echo ${{ toJSON(needs.check_has_command_text.outputs) }}
       - uses: actions/github-script@v6
         with:
           script: |
