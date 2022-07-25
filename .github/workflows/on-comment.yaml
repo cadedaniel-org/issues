@@ -8,7 +8,7 @@ jobs:
   check_has_command_text:
     runs-on: ubuntu-latest
     outputs:
-      comment_has_command_text: ${{ steps.check_comment_has_command_text.comment_has_command_text == 'true' }}
+      comment_has_command_text: ${{ steps.check_comment_has_command_text.comment_has_command_text }}
     steps:
       - id: check_comment_has_command_text
         run: echo ${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}
@@ -18,7 +18,7 @@ jobs:
     steps:
       - if: ${{ needs.check_has_command_text.outputs.comment_has_command_text == 'true' }}
         run: echo 'Yes it has the command text.'
-      - if: ${{ !needs.check_has_command_text.outputs.comment_has_command_text }}
+      - if: ${{ needs.check_has_command_text.outputs.comment_has_command_text == 'false' }}
         run: echo 'No, it does not have the command text.'
       - run: echo ${{ needs.check_has_command_text.outputs.comment_has_command_text }}
       - uses: actions/github-script@v6
