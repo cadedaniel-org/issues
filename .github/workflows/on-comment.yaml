@@ -3,6 +3,8 @@ name: "(on comment) Add incident issues to tracker"
 on:
   issue_comment:
     types: [created]
+  issues:
+    types: [opened]
 
 jobs:
   check_has_command_text:
@@ -22,7 +24,7 @@ jobs:
         with:
           project-url: https://github.com/orgs/cadedaniel-org/projects/1/
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-      - name: "Add comment to the issue."
+      - name: "Add label to PM issue, create PM action item milestone, add comment to issue."
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
@@ -62,52 +64,3 @@ jobs:
               repo: context.repo.repo,
               body: comment_string
             });
-
-        #- uses: actions/github-script@v6
-        #  with:
-        #    script: |
-        #      github.rest.issues.createComment({
-        #        issue_number: context.issue.number,
-        #        owner: context.repo.owner,
-        #        repo: context.repo.repo,
-        #        body: '👋 Thanks for reporting!'
-        #      })
-#  add-rootly-postmortems-to-tracker:
-#    runs-on: ubuntu-latest
-#    steps:
-#    - name: "Add issue to postmortem tracker"
-#      uses: actions/add-to-project@main
-#      if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}
-#      with:
-#        project-url: https://github.com/orgs/cadedaniel-org/projects/1/
-#        github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-#    - name: "Create a new milestone"
-#      if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}
-#      id: create-milestone
-#      uses: oinume/create-scheduled-milestone-action@v1.0.0
-#      with:
-#        title: "${{ github.event.issue.title }} [postmortem-tracker]"
-#        state: "open"
-#        description: "Milestone for action items of postmortem [${{ github.event.issue.title}}](${{ github.event.issue.html_url }})."
-#      env:
-#        GITHUB_TOKEN: "${{ secrets.ADD_TO_PROJECT_PAT }}"
-#    - name: "Add label"
-#      uses: github/issue-labeler@v2.4.1
-#      if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}
-#      with:
-#        repo-token: "${{ secrets.ADD_TO_PROJECT_PAT }}"
-#        configuration-path: does-not-exist # .github/workflows/add-ir-issues-to-tracker.yaml
-#        enable-versioned-regex: 1
-#        versioned-regex: 'this-versioned-regex-should-never-match'
-#        body-missing-regex-label: 'pi-postmortem'
-#    - name: Create comment
-#      if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}
-#      uses: peter-evans/create-or-update-comment@v2
-#      with:
-#        issue-number: ${{ github.event.issue.number }}
-#        token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-#        body: |
-#          [bot] I see a `/created-by-rootly`. I've done the following things:
-#            * Added this issue to the [postmortem tracker](https://github.com/orgs/cadedaniel-org/projects/1/views/10).
-#            * Created [a milestone for action items](https://github.com/cadedaniel-org/issues/milestone/${{ steps.create-milestone.outputs.number }}).
-#            * Added the label [`pi-postmortem`](https://github.com/cadedaniel-org/issues/labels/pi-postmortem) to this issue.
