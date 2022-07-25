@@ -34,6 +34,7 @@ jobs:
               labels: ['pi-postmortem']
             })
 
+            console.log(context.issue)
             const max_milestone_length = 200
             const issue_title = context.issue.title.substr(0, max_milestone_length)
             milestone = await github.rest.issues.createMilestone({
