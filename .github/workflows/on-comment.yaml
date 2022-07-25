@@ -28,7 +28,7 @@ jobs:
                 * Added this issue to the [postmortem tracker](https://github.com/orgs/cadedaniel-org/projects/1/views/10).
                 * Added the label [`pi-postmortem`](https://github.com/cadedaniel-org/issues/labels/pi-postmortem) to this issue."
             })
-            # * Created [a milestone for action items](https://github.com/cadedaniel-org/issues/milestone/${{ steps.create-milestone.outputs.number }}).
+            // * Created [a milestone for action items](https://github.com/cadedaniel-org/issues/milestone/${{ steps.create-milestone.outputs.number }}).
             console.log(context)
             //console.log(needs.check_has_command_text.outputs)
 
