@@ -40,10 +40,8 @@ jobs:
               repo: context.repo.repo,
             })
 
-            console.log(pm_issue)
-            console.log(context.issue)
             const max_milestone_length = 200
-            const issue_title = context.issue.title.substr(0, max_milestone_length)
+            const issue_title = pm_issue.data.title.substr(0, max_milestone_length)
             milestone = await github.rest.issues.createMilestone({
               owner: context.repo.owner,
               repo: context.repo.repo,
