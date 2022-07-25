@@ -20,6 +20,7 @@ jobs:
         run: echo 'Yes it has the command text.'
       - if: ${{ !needs.check_has_command_text.outputs.comment_has_command_text }}
         run: echo 'No, it does not have the command text.'
+      - run: echo ${{ needs.check_has_command_text.outputs.comment_has_command_text }}
       - uses: actions/github-script@v6
         with:
           script: |
