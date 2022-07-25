@@ -20,7 +20,7 @@ jobs:
   add_command_as_comment:
     runs-on: ubuntu-latest
     needs: check_has_command_text
-    if: needs.check_has_command_text.outputs.check_body_has_command_text == 'true'
+    if: needs.check_has_command_text.outputs.body_has_command_text == 'true'
     steps:
       - name: "Add command comment."
         uses: actions/github-script@v6
@@ -36,7 +36,7 @@ jobs:
   add_to_project:
     runs-on: ubuntu-latest
     needs: check_has_command_text
-    if: needs.check_has_command_text.outputs.check_body_has_command_text == 'true'
+    if: needs.check_has_command_text.outputs.comment_has_command_text == 'true'
     steps:
       - name: "Add issue to postmortem tracker"
         uses: actions/add-to-project@main
