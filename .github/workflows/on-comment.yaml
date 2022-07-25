@@ -36,7 +36,7 @@ jobs:
             milestone = await github.rest.issues.createMilestone({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: 'test812',
+              title: 'test8123',
             });
 
             const command_tag = '`/created-by-rootly`'
