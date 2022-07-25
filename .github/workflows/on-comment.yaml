@@ -40,10 +40,11 @@ jobs:
             });
 
             const command_tag = '`/created-by-rootly`'
+            const label = '`pi-postmortem`'
             const comment_string = `[bot] I see a ${command_tag}. I've done the following things:
               * Added this issue to the [postmortem tracker](https://github.com/orgs/cadedaniel-org/projects/1/views/10).
               * Created [a milestone for action items](https://github.com/cadedaniel-org/issues/milestone/${milestone.data.number}).
-              * Added the label [`pi-postmortem`](https://github.com/cadedaniel-org/issues/labels/pi-postmortem) to this issue.`
+              * Added the label [${label}](https://github.com/cadedaniel-org/issues/labels/pi-postmortem) to this issue.`
 
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
