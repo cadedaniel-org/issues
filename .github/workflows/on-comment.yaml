@@ -4,7 +4,7 @@ on:
   issue_comment:
     types: [created]
   issues:
-    types: [opened]
+    types: [opened, milestoned]
 
 jobs:
   check_has_command_text:
@@ -14,9 +14,10 @@ jobs:
       body_has_command_text: ${{ steps.check_body_has_command_text.outputs.body_has_command_text }}
     steps:
       - id: check_comment_has_command_text
-        run: echo "::set-output name=comment_has_command_text::${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}"
+        run: echo "::set-output name=comment_has_command_text::${{ !github.event.issue.pull_request && github.event.comment.body == '/add-to-postmortem-tracker' }}"
       - id: check_body_has_command_text
-        run: echo "::set-output name=body_has_command_text::${{ github.event_name == 'issues' && contains(github.event.issue.body, '/created-by-rootly') }}"
+        run: echo "::set-output name=body_has_command_text::${{ github.event_name == 'issues' && contains(github.event.issue.body, '/add-to-postmortem-tracker') }}"
+      - run: echo "${{ toJSON(github) }}"
   add_command_as_comment:
     runs-on: ubuntu-latest
     needs: check_has_command_text
@@ -31,7 +32,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '/created-by-rootly'
+              body: '/add-to-postmortem-tracker'
             });
   add_to_project:
     runs-on: ubuntu-latest
@@ -70,7 +71,7 @@ jobs:
               description: "Milestone for action items of postmortem [" + issue_title + "](" + pm_issue.data.html_url + ")."
             });
 
-            const command_tag = '`/created-by-rootly`'
+            const command_tag = '`/add-to-postmortem-tracker`'
             const label = '`pi-postmortem`'
             const comment_string = `[bot] I see a ${command_tag}. I've done the following things:
               * Added this issue to the [postmortem tracker](https://github.com/orgs/cadedaniel-org/projects/1/views/10).
