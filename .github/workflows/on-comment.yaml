@@ -33,19 +33,24 @@ jobs:
               repo: context.repo.repo,
               labels: ['pi-postmortem']
             })
-            rval = await github.rest.issues.createMilestone({
+            milestone = await github.rest.issues.createMilestone({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: 'test812',
             });
-            console.log(rval);
+
+            const command_tag = '`/created-by-rootly`'
+            const comment_string = `[bot] I see a ${command_tag}. I've done the following things:
+              * Added this issue to the [postmortem tracker](https://github.com/orgs/cadedaniel-org/projects/1/views/10).
+              * Created [a milestone for action items](https://github.com/cadedaniel-org/issues/milestone/${milestone.data.number}).
+              * Added the label [`pi-postmortem`](https://github.com/cadedaniel-org/issues/labels/pi-postmortem) to this issue.`
+
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "[bot] I see a `/created-by-rootly`. I've done the following things:\n* Added this issue to the [postmortem tracker](https://github.com/orgs/cadedaniel-org/projects/1/views/10).\n* Added the label [`pi-postmortem`](https://github.com/cadedaniel-org/issues/labels/pi-postmortem) to this issue."
+              body: comment_string
             });
-            // * Created [a milestone for action items](https://github.com/cadedaniel-org/issues/milestone/${{ steps.create-milestone.outputs.number }}).
 
         #- uses: actions/github-script@v6
         #  with:
