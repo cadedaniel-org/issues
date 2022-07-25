@@ -27,13 +27,20 @@ jobs:
         with:
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           script: |
-            rval = await github.rest.issues.addLabels({
+            await github.rest.issues.addLabels({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: ['pi-postmortem']
             })
-            console.log(rval)
+
+            pm_issue = await github.rest.issues.get({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+
+            console.log(pm_issue)
             console.log(context.issue)
             const max_milestone_length = 200
             const issue_title = context.issue.title.substr(0, max_milestone_length)
