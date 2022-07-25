@@ -13,8 +13,7 @@ jobs:
       test: "cade"
     steps:
       - id: check_comment_has_command_text
-        #run: echo "::set-output name=comment_has_command_text::${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}"
-        run: echo "::set-output name=comment_has_command_text::hello"
+        run: echo "::set-output name=comment_has_command_text::${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}"
       - id: test2
         run: echo "::set-output name=test2:hello"
   dependent:
