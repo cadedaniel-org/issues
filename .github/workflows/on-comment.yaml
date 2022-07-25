@@ -17,10 +17,22 @@ jobs:
     needs: check_has_command_text
     if: needs.check_has_command_text.outputs.comment_has_command_text == 'true'
     steps:
-      - uses: actions/github-script@v6
+      - name: "Add issue to postmortem tracker"
+        uses: actions/add-to-project@main
+        with:
+          project-url: https://github.com/orgs/cadedaniel-org/projects/1/
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+      - name: "Add comment to the issue."
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['pi-postmortem', 'test81']
+            })
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -28,8 +40,6 @@ jobs:
               body: "[bot] I see a `/created-by-rootly`. I've done the following things:\n* Added this issue to the [postmortem tracker](https://github.com/orgs/cadedaniel-org/projects/1/views/10).\n* Added the label [`pi-postmortem`](https://github.com/cadedaniel-org/issues/labels/pi-postmortem) to this issue."
             })
             // * Created [a milestone for action items](https://github.com/cadedaniel-org/issues/milestone/${{ steps.create-milestone.outputs.number }}).
-            console.log(context)
-            //console.log(needs.check_has_command_text.outputs)
 
         #- uses: actions/github-script@v6
         #  with:
