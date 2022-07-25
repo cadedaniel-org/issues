@@ -27,19 +27,19 @@ jobs:
         with:
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           script: |
-            github.rest.issues.addLabels({
+            await github.rest.issues.addLabels({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: ['pi-postmortem']
-            });
-            rval = github.rest.issues.createMilestone({
+            })
+            rval = await github.rest.issues.createMilestone({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: 'test81',
             });
             console.log(rval);
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
