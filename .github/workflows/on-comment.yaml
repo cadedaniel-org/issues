@@ -10,6 +10,7 @@ jobs:
     outputs:
       test2: ${{ steps.test2.outputs.test2 }}
       test3: ${{ steps.check_comment_has_command_text.outputs.comment_has_command_text }}
+      comment_has_command_text: ${{ steps.check_comment_has_command_text.outputs.comment_has_command_text }}
       test: "cade"
     steps:
       - id: check_comment_has_command_text
