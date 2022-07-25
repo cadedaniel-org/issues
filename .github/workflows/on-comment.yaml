@@ -11,7 +11,6 @@ jobs:
       comment_has_command_text: ${{ steps.check_comment_has_command_text.comment_has_command_text }}
     steps:
       - id: check_comment_has_command_text
-        echo "::set-output name=test::hello"
         run: echo "::set-output comment_has_command_text=${{ !github.event.issue.pull_request && github.event.comment.body == '/created-by-rootly' }}"
   dependent:
     runs-on: ubuntu-latest
