@@ -23,8 +23,8 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            console.log(needs.check_has_command_text.outputs)
             console.log(context)
+            //console.log(needs.check_has_command_text.outputs)
 
         #- uses: actions/github-script@v6
         #  with:
