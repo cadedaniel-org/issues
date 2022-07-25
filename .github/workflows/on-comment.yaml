@@ -33,10 +33,14 @@ jobs:
               repo: context.repo.repo,
               labels: ['pi-postmortem']
             })
+
+            const max_milestone_length = 200
+            const issue_title = context.issue.title.substr(0, max_milestone_length)
             milestone = await github.rest.issues.createMilestone({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: 'test8123',
+              title: issue_title + " [postmortem-tracker]",
+              description: "Milestone for action items of postmortem [" + issue_title + "](" + context.event.issue.html_url + ")."
             });
 
             const command_tag = '`/created-by-rootly`'
